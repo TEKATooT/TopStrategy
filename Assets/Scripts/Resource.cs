@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool _isRespawned;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool IsRespawned => _isRespawned;
 }

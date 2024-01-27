@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class BotSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Bot _bot;
+    [SerializeField] private float _startQiantityBots;
+    [SerializeField] private float _spawnerDelay;
+
+    [SerializeField] private Base _base;
+
+    private void Start()
     {
-        
+        StartCoroutine(Spawned(_startQiantityBots));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator Spawned(float quantity)
     {
-        
+        var wait = new WaitForSeconds(_spawnerDelay); 
+
+        for (int i = 0; i < quantity; i++)
+        {
+            Bot newBot = Instantiate(_bot, transform.position, Quaternion.identity);
+
+            _base.AddBotInCollection(newBot);
+
+            yield return wait;
+        }
     }
 }

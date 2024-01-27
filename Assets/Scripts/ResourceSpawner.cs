@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class ResourceSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private Resource _resource;
+    [SerializeField] private int _spawnedTime;
+
+    private void Start()
     {
-        
+        StartCoroutine(nameof(Spawned));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator Spawned()
     {
-        
+        var wait = new WaitForSeconds(_spawnedTime);
+
+       // int randomPoint = Random.Range(0, _spawnPoints.Length);
+
+        for (int i = 0; i < _spawnPoints.Length; i++)
+        {
+            Instantiate(_resource, _spawnPoints[i]);
+
+            yield return wait;
+        }
     }
 }
