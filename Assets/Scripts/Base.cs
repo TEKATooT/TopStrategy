@@ -30,7 +30,7 @@ public class Base : MonoBehaviour
     {
         Debug.Log("GO JOB");
 
-        _myBots[1].GoToJob(_resource.transform.position);
+        _myBots[1].NewTask(_resource.transform.position);
     }
 
     private void CheckPlane()

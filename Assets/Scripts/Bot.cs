@@ -10,6 +10,7 @@ public class Bot : MonoBehaviour
     private Rigidbody _rigidbody;
     private Vector3 _startPosition;
     private Vector3 _targetPosition;
+    private Coroutine _botOnJob;
 
     private float _stoppetTimer = 3;
     private float _stoppetRepeating = 5;
@@ -25,8 +26,10 @@ public class Bot : MonoBehaviour
         InvokeRepeating(nameof(Stop), _stoppetTimer, _stoppetRepeating);
     }
 
-    public void GoToJob(Vector3 position)
+    public void NewTask(Vector3 position)
     {
+        _startPosition = transform.position;
+
         _targetPosition = position;
 
         _isFinished = false;
@@ -34,30 +37,41 @@ public class Bot : MonoBehaviour
         _isGetTarget = false;
 
         Debug.Log("OK LETS GO");
+
+        _botOnJob = StartCoroutine(GoToJob());
     }
 
-    private void Go()           // надо в update
+    private IEnumerator GoToJob()
     {
-        if (_isGetTarget == false)
+        var wait = new WaitForFixedUpdate();
+
+        while (_isFinished == false)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
+            if (_isGetTarget == false)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
 
-            Debug.Log("OK LETS GO TO TARGET");
+                Debug.Log("OK LETS GO TO TARGET");
 
-            if (transform.position == _targetPosition)
-                _isGetTarget = true;
-        }
+                if (transform.position == _targetPosition)
+                    _isGetTarget = true;
+            }
 
-        if (_isGetTarget == true)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _startPosition, _speed * Time.deltaTime);
+            if (_isGetTarget == true)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _startPosition, _speed * Time.deltaTime);
 
-            Debug.Log("OK LETS GO TO BASE");
+                Debug.Log("OK LETS GO TO BASE");
 
-            if (transform.position == _startPosition)
-                _isGetTarget = false;
+                if (transform.position == _startPosition)
+                {
+                    _isFinished = true;
 
-            _isFinished = true;
+                    StopCoroutine(_botOnJob);
+                }
+            }
+
+            yield return wait;
         }
     }
 
