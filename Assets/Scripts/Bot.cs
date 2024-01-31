@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Bot : MonoBehaviour
 {
     [SerializeField] private float _speed;
+
+    [SerializeField] private Resource _resource;
 
     private Rigidbody _rigidbody;
     private Vector3 _startPosition;
@@ -26,11 +26,11 @@ public class Bot : MonoBehaviour
         InvokeRepeating(nameof(Stop), _stoppetTimer, _stoppetRepeating);
     }
 
-    public void NewTask(Vector3 position)
+    public void NewTask(Resource resource)
     {
         _startPosition = transform.position;
 
-        _targetPosition = position;
+        _targetPosition = resource.transform.position;
 
         _isFinished = false;
 
@@ -38,10 +38,10 @@ public class Bot : MonoBehaviour
 
         Debug.Log("OK LETS GO");
 
-        _botOnJob = StartCoroutine(GoToJob());
+        _botOnJob = StartCoroutine(GoToJob(resource));
     }
 
-    private IEnumerator GoToJob()
+    private IEnumerator GoToJob(Resource resource)
     {
         var wait = new WaitForFixedUpdate();
 
@@ -51,17 +51,21 @@ public class Bot : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
 
-                Debug.Log("OK LETS GO TO TARGET");
+               // Debug.Log("OK LETS GO TO TARGET");
 
                 if (transform.position == _targetPosition)
+                {
+                    StartCoroutine(TakeResource(resource));
+
                     _isGetTarget = true;
+                }
             }
 
             if (_isGetTarget == true)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _startPosition, _speed * Time.deltaTime);
 
-                Debug.Log("OK LETS GO TO BASE");
+               // Debug.Log("OK LETS GO TO BASE");
 
                 if (transform.position == _startPosition)
                 {
@@ -75,14 +79,28 @@ public class Bot : MonoBehaviour
         }
     }
 
+    private IEnumerator TakeResource(Resource resource)
+    {
+        var wait = new WaitForFixedUpdate();
+
+        while (_isFinished != true)
+        {
+            resource.transform.position = transform.position;
+
+            resource.ToTake();
+
+            yield return wait;
+        }
+    }
+
     private void Stop()
     {
         if (_isFinished == true)
         {
-            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = Vector3.zero;         // почему не сразу
 
             _startPosition = transform.position;
-            Debug.Log("Stopped");
+          //  Debug.Log("Stopped");
         }
     }
 }

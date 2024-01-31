@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ScoreInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Base _base;
+    [SerializeField] TextMeshProUGUI _text;
+
+    private void OnEnable()
     {
-        
+        _base.ScoreChened += ScoreShow;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        _base.ScoreChened -= ScoreShow;
+    }
+
+    private void Start()
+    {
+        ScoreShow();
+    }
+
+    private void ScoreShow()
+    {
+        _text.text = _base.ResourceScore.ToString();
     }
 }

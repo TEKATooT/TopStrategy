@@ -23,7 +23,14 @@ public class ResourceSpawner : MonoBehaviour
         {
             Instantiate(_resource, _spawnPoints[i]);
 
+           // _spawnPoints[i].gameObject.SetActive(false);
+
             yield return wait;
+        }
+
+        foreach (var point in _spawnPoints)
+        {
+
         }
     }
 }
