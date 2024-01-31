@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
-    private bool _isRespawned;
+    private bool _isSelect;
 
-    public bool IsRespawned => _isRespawned;
+    public bool IsSelect => _isSelect;
+
+    public void Selected()
+    {
+        _isSelect = true;
+    }
 }

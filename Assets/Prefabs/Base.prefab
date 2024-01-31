@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3444032554160817922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5129731418226778067}
+  - component: {fileID: 1360803781464819101}
+  m_Layer: 0
+  m_Name: ScanPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5129731418226778067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3444032554160817922}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5251325376191011656}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1360803781464819101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3444032554160817922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fefb58b12509b4fa29c3e7d5b4c464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3536348012712065133
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +76,8 @@ Transform:
   m_LocalPosition: {x: 0.15562427, y: 1, z: -0.26160812}
   m_LocalScale: {x: 4.6085715, y: 1, z: 4.7333}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5129731418226778067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8353496631280834029
@@ -97,6 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843282fa219f9b9488f314b083b5b449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scanPosition: {fileID: 1360803781464819101}
+  _Bot: {fileID: -479973470399478615, guid: 89ac04b24a7d15b44af9a47930ddbd3d, type: 3}
+  _myBots: []
+  _startPlaneCheckDelay: 5
+  _checkPlaneDelay: 15
 --- !u!64 &5983242350366073568
 MeshCollider:
   m_ObjectHideFlags: 0
