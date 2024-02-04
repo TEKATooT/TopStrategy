@@ -23,7 +23,7 @@ public class BotSpawner : MonoBehaviour
         {
             Bot newBot = Instantiate(_bot, transform.position, Quaternion.identity);
 
-            _base.AddBotInCollection(newBot);       // почему только 2 в кооллекции
+            _base.AddBotInCollection(newBot);       // почему 1 нет в кооллекции если new List в Start
 
             yield return wait;
         }

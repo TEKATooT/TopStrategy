@@ -36,8 +36,6 @@ public class Bot : MonoBehaviour
 
         _isGetTarget = false;
 
-        Debug.Log("OK LETS GO");
-
         _botOnJob = StartCoroutine(GoToJob(resource));
     }
 
@@ -51,8 +49,6 @@ public class Bot : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
 
-               // Debug.Log("OK LETS GO TO TARGET");
-
                 if (transform.position == _targetPosition)
                 {
                     StartCoroutine(TakeResource(resource));
@@ -64,8 +60,6 @@ public class Bot : MonoBehaviour
             if (_isGetTarget == true)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _startPosition, _speed * Time.deltaTime);
-
-               // Debug.Log("OK LETS GO TO BASE");
 
                 if (transform.position == _startPosition)
                 {
@@ -87,10 +81,10 @@ public class Bot : MonoBehaviour
         {
             resource.transform.position = transform.position;
 
-            resource.ToTake();
-
             yield return wait;
         }
+
+            resource.ToTake();
     }
 
     private void Stop()
@@ -100,7 +94,6 @@ public class Bot : MonoBehaviour
             _rigidbody.velocity = Vector3.zero;         // почему не сразу
 
             _startPosition = transform.position;
-          //  Debug.Log("Stopped");
         }
     }
 }

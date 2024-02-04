@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5129731418226778067}
   - component: {fileID: 1360803781464819101}
   m_Layer: 0
-  m_Name: ScanPosition
+  m_Name: Scaner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,11 +142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843282fa219f9b9488f314b083b5b449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scanPosition: {fileID: 1360803781464819101}
+  _scaner: {fileID: 1360803781464819101}
   _Bot: {fileID: -479973470399478615, guid: 89ac04b24a7d15b44af9a47930ddbd3d, type: 3}
   _myBots: []
   _startPlaneCheckDelay: 5
-  _checkPlaneDelay: 15
+  _checkPlaneDelay: 1
+  _checkPlaneRotateSpeed: 50
 --- !u!64 &5983242350366073568
 MeshCollider:
   m_ObjectHideFlags: 0
