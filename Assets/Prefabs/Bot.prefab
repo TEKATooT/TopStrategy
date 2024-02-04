@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1995073207163660090}
   - component: {fileID: 5423397533744875149}
   - component: {fileID: -479973470399478615}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
+  _resource: {fileID: -7476327354148224316, guid: 1e07c8791d1ae1e4e8701a7a8bbc73d5, type: 3}

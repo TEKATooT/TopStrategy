@@ -11,6 +11,7 @@ public class Bot : MonoBehaviour
     private Vector3 _startPosition;
     private Vector3 _targetPosition;
     private Coroutine _botOnJob;
+    private Coroutine _botTakeResource;
 
     private float _stoppetTimer = 3;
     private float _stoppetRepeating = 5;
@@ -51,7 +52,7 @@ public class Bot : MonoBehaviour
 
                 if (transform.position == _targetPosition)
                 {
-                    StartCoroutine(TakeResource(resource));
+                    _botTakeResource = StartCoroutine(TakeResource(resource));
 
                     _isGetTarget = true;
                 }
@@ -84,14 +85,14 @@ public class Bot : MonoBehaviour
             yield return wait;
         }
 
-            resource.ToTake();
+        resource.ToTake();
     }
 
     private void Stop()
     {
         if (_isFinished == true)
         {
-            _rigidbody.velocity = Vector3.zero;         // почему не сразу
+            _rigidbody.velocity = Vector3.zero;
 
             _startPosition = transform.position;
         }

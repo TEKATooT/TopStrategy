@@ -5,28 +5,28 @@ using UnityEngine.Events;
 public class Base : MonoBehaviour
 {
     [SerializeField] private Scaner _scaner;
-    [SerializeField] private Bot _bot;
     [SerializeField] private List<Bot> _myBots;
 
-    [SerializeField] private float _startPlaneCheckDelay;
-    [SerializeField] private float _checkPlaneDelay;
+    [SerializeField] private float _startScanerDelay;
+    [SerializeField] private float _retryScanerDelay;
 
-    [SerializeField] private float _checkPlaneRotateSpeed = 30;
+    [SerializeField] private float _startBookingResourseDelay;
+    [SerializeField] private float _retryBookingResourseDelay;
+
+    [SerializeField] private float _startTakeReadyRecourceDelay;
+    [SerializeField] private float _checkReadyRecourceDelay;
 
     private List<Resource> _foundResources;
     private List<Resource> _collectedResorces;
 
-    private Vector3 rotate360 = new Vector3(0, 360, 0);
-    private Ray _ray;
-
     private float _freeResourcesQuantity;
-    private float _collectedResourcesQuantity;
-    private float _freeBotsQuantity;
+    private float _collectedResourcesQuantity = 0;
+    private float _botsQuantity;
     private float _busyBotsQuantity;
 
     public float FreeResources => _freeResourcesQuantity;
     public float CollectedResources => _collectedResourcesQuantity;
-    public float FreeBots => _freeBotsQuantity;
+    public float FreeBots => _botsQuantity;
     public float BusyBots => _busyBotsQuantity;
 
     public UnityAction ScoreChened;
@@ -34,59 +34,45 @@ public class Base : MonoBehaviour
     private void OnEnable()
     {
         _foundResources = new List<Resource>();
-        _collectedResorces = new List<Resource>();
+
         _myBots = new List<Bot>();
     }
 
     private void Start()
     {
-        _ray = new Ray(_scaner.transform.position, transform.forward);
+        InvokeRepeating(nameof(Scaning), _startScanerDelay, _retryScanerDelay);
 
-        InvokeRepeating(nameof(CheckPlane), _startPlaneCheckDelay, _checkPlaneDelay);
+        InvokeRepeating(nameof(TryBookingResource), _startBookingResourseDelay, _retryBookingResourseDelay);
+
+        InvokeRepeating(nameof(TakeReadyRecource), _startTakeReadyRecourceDelay, _checkReadyRecourceDelay);
     }
 
-    private void Update()
+    private void Scaning()
     {
-        Debug.DrawRay(_scaner.transform.position, transform.forward * 1000, Color.red);
-
-        transform.Rotate(rotate360, _checkPlaneRotateSpeed * Time.deltaTime);
+        _scaner.Work();
     }
 
     public void AddBotInCollection(Bot newBot)
     {
         _myBots.Add(newBot);
+
+        _botsQuantity = _myBots.Count;
+
+        ScoreChened.Invoke();
     }
 
-    private void CheckPlane()
+    public void AddFoundResource(Resource resource)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(_ray, out hit, Mathf.Infinity))
-        {
-            if (hit.collider.TryGetComponent(out Resource resource))
-            {
-                if (resource != resource.IsFound)
-                {
-                    _foundResources.Add(resource);
-
-                    resource.Found();
-                }
-
-                Debug.Log("Chekiing fined" + _foundResources.Count);
-            }
-        }
-
-        TrySelectResource();
-        GetReadyRecource();
+        _foundResources.Add(resource);
     }
 
-    private void TrySelectResource()
+    private void TryBookingResource()
     {
-        Debug.Log("SelectResource fined" + _foundResources.Count);
         foreach (Resource resource in _foundResources)
         {
-            if (resource.IsSelect == false)
+            if (resource.IsBooking == false)
             {
-                resource.Select();
+                resource.Booking();
 
                 TrySelectBot(resource);
             }
@@ -106,33 +92,34 @@ public class Base : MonoBehaviour
         }
     }
 
-    public void GetReadyRecource()
+    private void TakeReadyRecource()
     {
-        foreach (var resources in _foundResources)
+        foreach (Resource resource in _foundResources)
         {
-            if (resources.IsReadyToTaken == true && resources.IsInPool == false)
+            if (resource.IsReadyToTaken == true && resource.IsInPool == false)
             {
-                Debug.Log("Õ¿ƒŒ ¡–¿“‹");
+                resource.TakeToPool();
 
-                _collectedResorces.Add(resources);
-
-                resources.TakeToPool();
-
-                resources.transform.position = transform.position;
-
-                Debug.Log(_collectedResorces.Count);
-
-                ShowInfo();
+                _collectedResourcesQuantity++;
             }
         }
+
+        ShowFreeResources();
     }
 
-    private void ShowInfo()
+    private void ShowFreeResources()
     {
-        _freeResourcesQuantity = _foundResources.Count;
-        _collectedResourcesQuantity = _collectedResorces.Count;
-        _freeBotsQuantity = _myBots.Count;
-        _busyBotsQuantity = _myBots.Count;
+        float nowFreeResourcesQuantity = 0;
+
+        foreach (var resource in _foundResources)
+        {
+            if (resource.IsFound == true && resource.IsInPool == false)
+            {
+                nowFreeResourcesQuantity++;
+            }
+
+            _freeResourcesQuantity = nowFreeResourcesQuantity;
+        }
 
         ScoreChened.Invoke();
     }

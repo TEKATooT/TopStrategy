@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scaner: {fileID: 1360803781464819101}
-  _Bot: {fileID: -479973470399478615, guid: 89ac04b24a7d15b44af9a47930ddbd3d, type: 3}
   _myBots: []
   _startPlaneCheckDelay: 5
-  _checkPlaneDelay: 1
+  _checkPlaneDelay: 10
   _checkPlaneRotateSpeed: 50
+  _foundResources: []
 --- !u!64 &5983242350366073568
 MeshCollider:
   m_ObjectHideFlags: 0

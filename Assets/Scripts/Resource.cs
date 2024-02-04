@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
     [SerializeField] private bool _isFound = false;
-    [SerializeField] private bool _isSelect = false;
-    [SerializeField] private bool _isReadyToTaken = false;
+    [SerializeField] private bool _isBooking = false;
+    [SerializeField] private bool _isReadyToTake = false;
     [SerializeField] private bool _isInPool = false;
 
     public bool IsFound => _isFound;
-    public bool IsSelect => _isSelect;
-    public bool IsReadyToTaken => _isReadyToTaken;
+    public bool IsBooking => _isBooking;
+    public bool IsReadyToTaken => _isReadyToTake;
     public bool IsInPool => _isInPool;
 
     public void Found()
@@ -19,18 +17,20 @@ public class Resource : MonoBehaviour
         _isFound = true;
     }
 
-    public void Select()
+    public void Booking()
     {
-        _isSelect = true;
+        _isBooking = true;
     }
 
     public void ToTake()
     {
-        _isReadyToTaken = true;
+        _isReadyToTake = true;
     }
 
     public void TakeToPool()
     {
         _isInPool = true;
+
+        gameObject.SetActive(false);
     }
 }

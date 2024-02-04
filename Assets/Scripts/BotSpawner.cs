@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BotSpawner : MonoBehaviour
@@ -23,7 +22,7 @@ public class BotSpawner : MonoBehaviour
         {
             Bot newBot = Instantiate(_bot, transform.position, Quaternion.identity);
 
-            _base.AddBotInCollection(newBot);       // почему 1 нет в кооллекции если new List в Start
+            _base.AddBotInCollection(newBot);
 
             yield return wait;
         }
