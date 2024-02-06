@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,11 +11,14 @@ public class Base : MonoBehaviour
     [SerializeField] private float _startScanerDelay;
     [SerializeField] private float _retryScanerDelay;
 
-    [SerializeField] private float _startBookingResourseDelay;
-    [SerializeField] private float _retryBookingResourseDelay;
+    [SerializeField] private float _startTrySelectBotDelay;
+    [SerializeField] private float _retryTrySelectBotDelay;
 
     [SerializeField] private float _startTakeReadyRecourceDelay;
     [SerializeField] private float _checkReadyRecourceDelay;
+
+    private Flagpole _flagpole;
+    [SerializeField] private bool _isBotGoCreateBase;
 
     private List<Resource> _foundResources;
     private List<Resource> _collectedResorces;
@@ -42,7 +46,7 @@ public class Base : MonoBehaviour
     {
         InvokeRepeating(nameof(Scaning), _startScanerDelay, _retryScanerDelay);
 
-        InvokeRepeating(nameof(TryBookingResource), _startBookingResourseDelay, _retryBookingResourseDelay);
+        InvokeRepeating(nameof(TrySelectBot), _startTrySelectBotDelay, _retryTrySelectBotDelay);
 
         InvokeRepeating(nameof(TakeReadyRecource), _startTakeReadyRecourceDelay, _checkReadyRecourceDelay);
     }
@@ -79,7 +83,56 @@ public class Base : MonoBehaviour
         }
     }
 
-    private void TryBookingResource()
+    public IEnumerator TryCreatNewBase(Flagpole flagpole)
+    {
+        var wait = new WaitForSeconds(1);
+
+        while (true)
+        {
+            if (flagpole.IsSet)
+            {
+                _isBotGoCreateBase = true;      // ne true
+
+                _flagpole = flagpole;
+            }
+
+            yield return wait;
+        }
+    }
+
+    private void TrySelectBot()
+    {
+        foreach (Bot bot in _myBots)
+        {
+            if (_isBotGoCreateBase == false)
+            {
+                if (bot.IsFinithed == true)
+                {
+                    TryTakeResource(bot);
+
+                    continue;
+                }
+            }
+
+            if (_isBotGoCreateBase == true)
+            {
+                if (bot.IsFinithed == true)
+                {
+                    GoNewBase(bot);
+                    _myBots.Remove(bot);        // передать?
+
+                    _isBotGoCreateBase = false;
+                }
+            }
+        }
+    }
+
+    private void GoNewBase(Bot bot)
+    {
+        bot.GoNewHome(_flagpole);
+    }
+
+    private void TryTakeResource(Bot bot)
     {
         foreach (Resource resource in _foundResources)
         {
@@ -87,20 +140,7 @@ public class Base : MonoBehaviour
             {
                 resource.Booking();
 
-                TrySelectBot(resource);
-            }
-        }
-    }
-
-    private void TrySelectBot(Resource selectResource)
-    {
-        foreach (Bot bot in _myBots)
-        {
-            if (bot.IsFinithed == true)
-            {
-                bot.NewTask(selectResource);
-
-                break;
+                bot.NewTask(resource, _scaner.transform.position);
             }
         }
     }

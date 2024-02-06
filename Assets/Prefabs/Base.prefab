@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 2334395844957845944}
   - component: {fileID: 3789949795451757968}
   - component: {fileID: 5983242350366073568}
+  - component: {fileID: 6515452337933650441}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -150,8 +151,8 @@ MonoBehaviour:
   _myBots: []
   _startScanerDelay: 3
   _retryScanerDelay: 6
-  _startBookingResourseDelay: 5
-  _retryBookingResourseDelay: 2
+  _startTrySelectBotDelay: 4
+  _retryTrySelectBotDelay: 1
   _startTakeReadyRecourceDelay: 10
   _checkReadyRecourceDelay: 1
 --- !u!64 &5983242350366073568
@@ -176,3 +177,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6515452337933650441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536348012712065133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930c6b78bc2ca1040b9d98212dcba1ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flagpole: {fileID: -4190461544404747832, guid: 8de3673506ea56542939ca212ffc6d10, type: 3}
+  _base: {fileID: 3789949795451757968}

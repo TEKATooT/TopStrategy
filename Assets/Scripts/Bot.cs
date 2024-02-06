@@ -6,13 +6,15 @@ public class Bot : MonoBehaviour
     [SerializeField] private float _speed;
 
     [SerializeField] private Base _base;
-    [SerializeField] private Resource _resource;
 
+    private Resource _resource;
     private Rigidbody _rigidbody;
-    private Vector3 _startPosition;
+    private Vector3 _finishPosition;
     private Vector3 _targetPosition;
     private Coroutine _botOnJob;
     private Coroutine _botTakeResource;
+
+    private Flagpole _fagpole;
 
     private float _stoppetTimer = 3;
     private float _stoppetRepeating = 5;
@@ -28,9 +30,9 @@ public class Bot : MonoBehaviour
         InvokeRepeating(nameof(Stop), _stoppetTimer, _stoppetRepeating);
     }
 
-    public void NewTask(Resource resource)
+    public void NewTask(Resource resource, Vector3 finishPosition)
     {
-        _startPosition = transform.position;
+        _finishPosition = finishPosition;
 
         _targetPosition = resource.transform.position;
 
@@ -39,6 +41,11 @@ public class Bot : MonoBehaviour
         _isGetTarget = false;
 
         _botOnJob = StartCoroutine(GoToJob(resource));
+    }
+
+    public void GoNewHome(Flagpole newBasePosition)
+    {
+        Debug.Log(newBasePosition.transform.position);
     }
 
     private IEnumerator GoToJob(Resource resource)
@@ -61,9 +68,9 @@ public class Bot : MonoBehaviour
 
             if (_isGetTarget == true)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _startPosition, _speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, _finishPosition, _speed * Time.deltaTime);
 
-                if (transform.position == _startPosition)
+                if (transform.position == _finishPosition)
                 {
                     _isFinished = true;
 
@@ -95,7 +102,7 @@ public class Bot : MonoBehaviour
         {
             _rigidbody.velocity = Vector3.zero;
 
-            _startPosition = transform.position;
+            _finishPosition = transform.position;
         }
     }
 }

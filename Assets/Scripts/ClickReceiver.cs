@@ -1,6 +1,6 @@
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class ClickReceiver : MonoBehaviour, IPointerClickHandler
 {
@@ -27,7 +27,7 @@ public class ClickReceiver : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void ResetFlag()
+    public void ResetFlag()     // когда нужно ли?
     {
         _newFlagpole = null;
     }
