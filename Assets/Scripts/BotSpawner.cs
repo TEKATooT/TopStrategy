@@ -24,7 +24,7 @@ public class BotSpawner : MonoBehaviour
 
         if (_base.CollectedResources >= _botPrice)
         {
-            _base.PayForOneBot(_botPrice);
+            _base.CanPay(_botPrice);
 
             StartCoroutine(Spawned(oneBot));
         }

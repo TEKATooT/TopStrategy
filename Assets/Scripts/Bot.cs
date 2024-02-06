@@ -5,6 +5,7 @@ public class Bot : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
+    [SerializeField] private Base _base;
     [SerializeField] private Resource _resource;
 
     private Rigidbody _rigidbody;

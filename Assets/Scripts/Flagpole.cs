@@ -3,6 +3,14 @@ using UnityEngine;
 public class Flagpole : MonoBehaviour
 {
     private bool _isSet = false;
+    private bool _isActive = false;
+
+    public bool IsActive => _isActive;
+
+    private void Start()
+    {
+        _isActive = true;
+    }
 
     private void Update()
     {
@@ -15,7 +23,7 @@ public class Flagpole : MonoBehaviour
                 gameObject.transform.position = raycastHit.point;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && raycastHit.collider.TryGetComponent(out Plane pale))
             {
                 _isSet = true;
             }
@@ -25,5 +33,10 @@ public class Flagpole : MonoBehaviour
         {
             gameObject.transform.position = gameObject.transform.position;
         }
+    }
+
+    public void SetOff()
+    {
+        _isSet = false;
     }
 }

@@ -66,9 +66,17 @@ public class Base : MonoBehaviour
         _foundResources.Add(resource);
     }
 
-    public void PayForOneBot(float price)
+    public bool CanPay(float price)
     {
-        _collectedResourcesQuantity -= price;
+        if (_collectedResourcesQuantity >= price)
+        {
+            _collectedResourcesQuantity -= price;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void TryBookingResource()
