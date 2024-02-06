@@ -66,6 +66,11 @@ public class Base : MonoBehaviour
         _foundResources.Add(resource);
     }
 
+    public void PayForOneBot(float price)
+    {
+        _collectedResourcesQuantity -= price;
+    }
+
     private void TryBookingResource()
     {
         foreach (Resource resource in _foundResources)

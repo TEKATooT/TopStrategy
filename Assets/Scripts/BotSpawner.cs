@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BotSpawner : MonoBehaviour
 {
@@ -8,10 +9,25 @@ public class BotSpawner : MonoBehaviour
     [SerializeField] private float _spawnerDelay;
 
     [SerializeField] private Base _base;
+    [SerializeField] private float _botPrice = 3;
+
+    [SerializeField] private Button _botButton;
 
     private void Start()
     {
         StartCoroutine(Spawned(_startQiantityBots));
+    }
+
+    public void AddBot()
+    {
+        float oneBot = 1;
+
+        if (_base.CollectedResources >= _botPrice)
+        {
+            _base.PayForOneBot(_botPrice);
+
+            StartCoroutine(Spawned(oneBot));
+        }
     }
 
     private IEnumerator Spawned(float quantity)

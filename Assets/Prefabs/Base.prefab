@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5129731418226778067
 Transform:
   m_ObjectHideFlags: 0
@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fefb58b12509b4fa29c3e7d5b4c464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _base: {fileID: 3789949795451757968}
+  _checkPlaneRotateSpeed: 160
+  _workTime: 3
+  _workDuration: 0
 --- !u!1 &3536348012712065133
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,10 +148,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaner: {fileID: 1360803781464819101}
   _myBots: []
-  _startPlaneCheckDelay: 5
-  _checkPlaneDelay: 10
-  _checkPlaneRotateSpeed: 50
-  _foundResources: []
+  _startScanerDelay: 3
+  _retryScanerDelay: 6
+  _startBookingResourseDelay: 5
+  _retryBookingResourseDelay: 2
+  _startTakeReadyRecourceDelay: 10
+  _checkReadyRecourceDelay: 1
 --- !u!64 &5983242350366073568
 MeshCollider:
   m_ObjectHideFlags: 0
