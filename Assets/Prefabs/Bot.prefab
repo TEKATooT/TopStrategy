@@ -147,5 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
-  _base: {fileID: 0}
-  _resource: {fileID: -7476327354148224316, guid: 1e07c8791d1ae1e4e8701a7a8bbc73d5, type: 3}
+  _basePrefab: {fileID: 3789949795451757968, guid: ef875243371cc304dbf01973ba6b661a, type: 3}

@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class ClickReceiver : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Flagpole _flagpole;
-    [SerializeField] private Base _base;
 
+    private Base _base;
     private Flagpole _newFlagpole;
 
-    private Vector3 FlagAngle = new Vector3(65, 0, 0);
-    private float _basePrice = 5;
+    private Vector3 _flagAngle = new Vector3(65, 0, 0);
+
+    private void Start()
+    {
+        _base = GetComponent<Base>();
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_newFlagpole == null && _base.CanPay(_basePrice))
+        if (_newFlagpole == null)
         {
-            _newFlagpole = Instantiate(_flagpole, transform.position, Quaternion.Euler(FlagAngle));
+            _newFlagpole = Instantiate(_flagpole, transform.position, Quaternion.Euler(_flagAngle));
+
+            _base.FlagAccept(_newFlagpole);
         }
         else
         {
@@ -27,8 +32,8 @@ public class ClickReceiver : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void ResetFlag()     // когда нужно ли?
+    public void ClickReceiverOff()
     {
-        _newFlagpole = null;
+        gameObject.SetActive(false);
     }
 }

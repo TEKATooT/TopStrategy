@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
-    [SerializeField] private bool _isFound = false;
-    [SerializeField] private bool _isBooking = false;
-    [SerializeField] private bool _isReadyToTake = false;
-    [SerializeField] private bool _isInPool = false;
+    private bool _isFound = false;
+    private bool _isBooking = false;
+    private bool _isReadyToTake = false;
+    private bool _isInPool = false;
 
     public bool IsFound => _isFound;
     public bool IsBooking => _isBooking;

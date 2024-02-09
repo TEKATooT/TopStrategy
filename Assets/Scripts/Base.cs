@@ -1,11 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] private Scaner _scaner;
     [SerializeField] private List<Bot> _myBots;
 
     [SerializeField] private float _startScanerDelay;
@@ -17,8 +15,10 @@ public class Base : MonoBehaviour
     [SerializeField] private float _startTakeReadyRecourceDelay;
     [SerializeField] private float _checkReadyRecourceDelay;
 
-    private Flagpole _flagpole;
-    [SerializeField] private bool _isBotGoCreateBase;
+    [SerializeField] private Flagpole _flagpole;
+
+    [SerializeField] private Scaner _scaner;
+    [SerializeField] private bool _isResoursePriority;
 
     private List<Resource> _foundResources;
     private List<Resource> _collectedResorces;
@@ -26,17 +26,20 @@ public class Base : MonoBehaviour
     private float _freeResourcesQuantity;
     private float _collectedResourcesQuantity = 0;
     private float _botsQuantity;
-    private float _busyBotsQuantity;
 
+    public event UnityAction NewBase;
+
+    public bool IsResoursePriority => _isResoursePriority;
     public float FreeResources => _freeResourcesQuantity;
     public float CollectedResources => _collectedResourcesQuantity;
     public float FreeBots => _botsQuantity;
-    public float BusyBots => _busyBotsQuantity;
 
-    public UnityAction ScoreChened;
+    public event UnityAction ScoreChened;
 
     private void OnEnable()
     {
+        _scaner = GetComponentInChildren<Scaner>();
+
         _foundResources = new List<Resource>();
 
         _myBots = new List<Bot>();
@@ -44,6 +47,8 @@ public class Base : MonoBehaviour
 
     private void Start()
     {
+        _isResoursePriority = true;
+
         InvokeRepeating(nameof(Scaning), _startScanerDelay, _retryScanerDelay);
 
         InvokeRepeating(nameof(TrySelectBot), _startTrySelectBotDelay, _retryTrySelectBotDelay);
@@ -51,9 +56,11 @@ public class Base : MonoBehaviour
         InvokeRepeating(nameof(TakeReadyRecource), _startTakeReadyRecourceDelay, _checkReadyRecourceDelay);
     }
 
-    private void Scaning()
+    public void FlagAccept(Flagpole flagpole)
     {
-        _scaner.Work();
+        _flagpole = flagpole;
+
+        _isResoursePriority = false;
     }
 
     public void AddBotInCollection(Bot newBot)
@@ -83,53 +90,39 @@ public class Base : MonoBehaviour
         }
     }
 
-    public IEnumerator TryCreatNewBase(Flagpole flagpole)
+    private void Scaning()
     {
-        var wait = new WaitForSeconds(1);
-
-        while (true)
-        {
-            if (flagpole.IsSet)
-            {
-                _isBotGoCreateBase = true;      // ne true
-
-                _flagpole = flagpole;
-            }
-
-            yield return wait;
-        }
+        _scaner.Work();
     }
 
     private void TrySelectBot()
     {
-        foreach (Bot bot in _myBots)
+        for (int i = 0; i < _myBots.Count; i++)
         {
-            if (_isBotGoCreateBase == false)
+            if (_isResoursePriority)
             {
-                if (bot.IsFinithed == true)
+                if (_myBots[i].IsFinithed == true)
                 {
-                    TryTakeResource(bot);
+                    TryTakeResource(_myBots[i]);
 
-                    continue;
+                    break;
                 }
             }
 
-            if (_isBotGoCreateBase == true)
+            else
             {
-                if (bot.IsFinithed == true)
+                if (_myBots[i].IsFinithed == true)
                 {
-                    GoNewBase(bot);
-                    _myBots.Remove(bot);        // передать?
+                    _myBots[i].NewTask(_flagpole);
 
-                    _isBotGoCreateBase = false;
+                    NewBase?.Invoke();
+
+                    _myBots.Remove(_myBots[i]);
+
+                    _isResoursePriority = true;
                 }
             }
         }
-    }
-
-    private void GoNewBase(Bot bot)
-    {
-        bot.GoNewHome(_flagpole);
     }
 
     private void TryTakeResource(Bot bot)

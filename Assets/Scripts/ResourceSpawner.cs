@@ -4,12 +4,12 @@ public class ResourceSpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Resource _resource;
-    [SerializeField] private int _startSpawnedTime;
-    [SerializeField] private int _spawnedTime;
+    [SerializeField] private int _startSpawnedDelay = 1;
+    [SerializeField] private int _respawnedDelay = 3;
 
     private void Start()
     {
-        InvokeRepeating(nameof(Spawned), _startSpawnedTime, _spawnedTime);
+        InvokeRepeating(nameof(Spawned), _startSpawnedDelay, _respawnedDelay);
     }
 
     private void Spawned()
