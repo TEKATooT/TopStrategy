@@ -6,6 +6,7 @@ public class Bot : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Base _basePrefab;
+    [SerializeField] private Flagpole _flagpole;
 
     private Rigidbody _rigidbody;
     private Vector3 _targetPosition;
@@ -42,16 +43,16 @@ public class Bot : MonoBehaviour
         _botOnJob = StartCoroutine(GoToResource(resource));
     }
 
-    public void NewTask(Flagpole newBasePosition)
+    public void NewTask(Flagpole newFlag)
     {
-        newBasePosition.NewFlagPosition += NewBasePosition;
+        newFlag.NewFlag += NewBaseNewPosition;
+
+        _flagpole = newFlag;
     }
 
-    public void NewBasePosition(Vector3 newPosition)
+    public void NewBaseNewPosition(Flagpole _flagpole)
     {
-        Debug.Log(newPosition);
-
-        _targetPosition = newPosition;
+        _targetPosition = _flagpole.transform.position;
 
         _isFinished = false;
 
@@ -62,6 +63,10 @@ public class Bot : MonoBehaviour
 
     private IEnumerator GoNewBase()
     {
+        Vector3 newBasePosition;
+
+        float heightNewBase = 5;
+
         while (_isFinished == false)
         {
             transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
@@ -69,17 +74,27 @@ public class Bot : MonoBehaviour
             if (transform.position == _targetPosition)
             {
                 _isGetTarget = true;
-            }
 
-            if (_isGetTarget)
-            {
-                Instantiate(_basePrefab, transform.position, Quaternion.identity);
+                if (_isGetTarget)
+                {
+                    newBasePosition = transform.position;
+
+                    newBasePosition.y = heightNewBase;
+
+                    var newBase = Instantiate(_basePrefab, newBasePosition, Quaternion.identity);
+
+                    newBase.AddBotInCollection(this);
+
+                    _flagpole.Active();
+
+                    StopCoroutine(_botOnJob);
+
+                    _isFinished = true;
+                }
             }
 
             yield return _waitForFixedUpdate;
         }
-
-        Debug.Log("GOGOGO");
     }
 
     private IEnumerator GoToResource(Resource resource)

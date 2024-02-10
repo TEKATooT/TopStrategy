@@ -1,11 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ClickReceiver : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Flagpole _flagpole;
+    [SerializeField] private Base _base;
 
-    private Base _base;
     private Flagpole _newFlagpole;
 
     private Vector3 _flagAngle = new Vector3(65, 0, 0);

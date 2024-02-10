@@ -5,8 +5,7 @@ public class SpawnerFromBase : MonoBehaviour
 {
     [SerializeField] private Bot _bot;
 
-    [SerializeField] private float _startQiantityBots;
-    [SerializeField] private float _spawnerDelay;
+    [SerializeField] private float _spawnerDelay = 1;
 
     [SerializeField] private float _botPrice = 3;
     [SerializeField] private float _basePrice = 5;
@@ -33,7 +32,6 @@ public class SpawnerFromBase : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(BotSpawner(_startQiantityBots));
         InvokeRepeating(nameof(DistributionResourse), _StartCheckForNewBotDelay, _checkForNewBotDelay);
     }
 

@@ -6,16 +6,17 @@ public class Base : MonoBehaviour
 {
     [SerializeField] private List<Bot> _myBots;
 
-    [SerializeField] private float _startScanerDelay;
-    [SerializeField] private float _retryScanerDelay;
+    [SerializeField] private float _startScanerDelay = 3;
+    [SerializeField] private float _retryScanerDelay = 6;
 
-    [SerializeField] private float _startTrySelectBotDelay;
-    [SerializeField] private float _retryTrySelectBotDelay;
+    [SerializeField] private float _startTrySelectBotDelay = 4;
+    [SerializeField] private float _retryTrySelectBotDelay = 1;
 
-    [SerializeField] private float _startTakeReadyRecourceDelay;
-    [SerializeField] private float _checkReadyRecourceDelay;
+    [SerializeField] private float _startTakeReadyRecourceDelay = 10;
+    [SerializeField] private float _checkReadyRecourceDelay = 1;
 
     [SerializeField] private Flagpole _flagpole;
+    [SerializeField] private ShowInfo _showInfo;
 
     [SerializeField] private Scaner _scaner;
     [SerializeField] private bool _isResoursePriority;
@@ -23,18 +24,14 @@ public class Base : MonoBehaviour
     private List<Resource> _foundResources;
     private List<Resource> _collectedResorces;
 
-    private float _freeResourcesQuantity;
-    private float _collectedResourcesQuantity = 0;
+    private float _collectedResourcesQuantity = 9;
     private float _botsQuantity;
 
     public event UnityAction NewBase;
 
     public bool IsResoursePriority => _isResoursePriority;
-    public float FreeResources => _freeResourcesQuantity;
     public float CollectedResources => _collectedResourcesQuantity;
-    public float FreeBots => _botsQuantity;
 
-    public event UnityAction ScoreChened;
 
     private void OnEnable()
     {
@@ -68,8 +65,6 @@ public class Base : MonoBehaviour
         _myBots.Add(newBot);
 
         _botsQuantity = _myBots.Count;
-
-        ScoreChened.Invoke();
     }
 
     public void AddFoundResource(Resource resource)
@@ -82,6 +77,9 @@ public class Base : MonoBehaviour
         if (_collectedResourcesQuantity >= price)
         {
             _collectedResourcesQuantity -= price;
+
+            _showInfo?.Show(_collectedResourcesQuantity);
+
             return true;
         }
         else
@@ -104,8 +102,6 @@ public class Base : MonoBehaviour
                 if (_myBots[i].IsFinithed == true)
                 {
                     TryTakeResource(_myBots[i]);
-
-                    break;
                 }
             }
 
@@ -150,23 +146,6 @@ public class Base : MonoBehaviour
             }
         }
 
-        ShowFreeResources();
-    }
-
-    private void ShowFreeResources()
-    {
-        float nowFreeResourcesQuantity = 0;
-
-        foreach (var resource in _foundResources)
-        {
-            if (resource.IsFound == true && resource.IsInPool == false)
-            {
-                nowFreeResourcesQuantity++;
-            }
-
-            _freeResourcesQuantity = nowFreeResourcesQuantity;
-        }
-
-        ScoreChened.Invoke();
+        _showInfo?.Show(_collectedResourcesQuantity);
     }
 }
