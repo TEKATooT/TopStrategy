@@ -16,16 +16,6 @@ public class Flagpole : MonoBehaviour
         _isActive = true;
     }
 
-    public void Active()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SetOff()
-    {
-        _isSet = false;
-    }
-
     private void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -41,7 +31,7 @@ public class Flagpole : MonoBehaviour
             {
                 _isSet = true;
 
-                NewFlag.Invoke(this);
+                NewFlag?.Invoke(this);
             }
         }
 
@@ -50,4 +40,10 @@ public class Flagpole : MonoBehaviour
             transform.position = transform.position;
         }
     }
+
+    public void SetOff()
+    {
+        _isSet = false;
+    }
+
 }

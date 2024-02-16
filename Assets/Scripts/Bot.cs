@@ -78,14 +78,11 @@ public class Bot : MonoBehaviour
                 if (_isGetTarget)
                 {
                     newBasePosition = transform.position;
-
                     newBasePosition.y = heightNewBase;
 
-                    var newBase = Instantiate(_basePrefab, newBasePosition, Quaternion.identity);
+                    Instantiate(_basePrefab, newBasePosition, Quaternion.identity).AddBotInCollection(this);
 
-                    newBase.AddBotInCollection(this);
-
-                    _flagpole.Active();
+                    _flagpole.gameObject.SetActive(false);
 
                     StopCoroutine(_botOnJob);
 

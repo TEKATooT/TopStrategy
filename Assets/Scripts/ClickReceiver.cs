@@ -26,10 +26,7 @@ public class ClickReceiver : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            if (_newFlagpole != null)
-            {
-                _newFlagpole.SetOff();
-            }
+            _newFlagpole.SetOff();
         }
     }
 
