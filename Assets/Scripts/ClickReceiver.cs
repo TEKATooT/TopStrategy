@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ClickReceiver : MonoBehaviour, IPointerClickHandler
+public class ClickReceiver : MonoBehaviour
 {
     [SerializeField] private Flagpole _flagpole;
     [SerializeField] private Base _base;
@@ -16,7 +14,7 @@ public class ClickReceiver : MonoBehaviour, IPointerClickHandler
         _base = GetComponent<Base>();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnMouseUpAsButton()
     {
         if (_newFlagpole == null)
         {
